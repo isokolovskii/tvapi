@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="Remote isokol-dev.ru" createEmptyFolders="true" exclude=".svn;.cvs;.idea;.DS_Store;.git;.hg;.gitignore" autoUploadExternalChanges="true">
+  <component name="PublishConfigData" autoUpload="Always" serverName="Remote isokol-dev.ru" createEmptyFolders="true" exclude=".svn;.cvs;.idea;.DS_Store;.git;.hg;.gitignore;*.http" autoUploadExternalChanges="true">
     <serverData>
       <paths name="Remote isokol-dev.ru">
         <serverdata>
           <mappings>
-            <mapping deploy="/restapitutorial" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/tvrestapi" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>

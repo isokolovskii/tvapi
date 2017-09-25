@@ -1,0 +1,11 @@
+GET http://tv.isokol-dev.ru:8085/channels
+Accept: application/json
+Cache-Control: no-cache
+
+###
+
+GET http://tv.isokol-dev.ru:8085/categories
+Accept: application/json
+Cache-Control: no-cache
+
+###

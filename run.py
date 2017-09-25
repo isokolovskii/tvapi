@@ -9,7 +9,9 @@ config = {
     'password': 'ndfgb2017',
     'server': 'localhost',
     'database': 'tvservice',
-    'charset': 'utf8'
+    'charset': 'utf8',
+    'host': 'isokol-dev.ru',
+    'port': 8085
 }
 
 e = create_engine('{dms}+{driver}://{user}:{password}@{server}/{database}?charset={charset}'.format(**config))
@@ -49,4 +51,4 @@ api.add_resource(Channels, '/channels')
 api.add_resource(Categories, '/categories')
 
 if __name__ == '__main__':
-    app.run(host='tv.isokol-dev.ru', port=8085)
+    app.run(host=config['host'], port=config['port'])
