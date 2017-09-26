@@ -1,20 +1,11 @@
-from flask import request
-from flask_restful import Resource
+from sqlalchemy import Column, Integer, String
 
-from database import engine as e
-from utils import parse_query
+from models.base import Base
 
 
-# TODO Add pages to request
-# TODO Add results per page property
-class Channels(Resource):
-    def __init__(self):
-        self.__args = request.args
-
-    def get(self):
-        conn = e.connect()
-        if 'id' in self.__args.keys():
-            query = conn.execute("SELECT * FROM channels WHERE id={id}".format(**self.__args))
-        else:
-            query = conn.execute("SELECT * FROM channels")
-        return parse_query(query)
+class Channels(Base):
+    __tablename__ = 'channels'
+    id = Column(Integer, primary_key=True, unique=True)
+    title = Column(String(255))
+    lang = Column(String(10))
+    icon = Column(String(255))

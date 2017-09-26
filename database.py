@@ -1,5 +1,10 @@
 from sqlalchemy import create_engine
-from config import config
+from sqlalchemy.orm import scoped_session
+from sqlalchemy.orm import sessionmaker
 
+from config import DB_URI
 
-engine = create_engine('{dms}+{driver}://{user}:{password}@{server}/{database}?charset={charset}'.format(**config))
+Session = sessionmaker(autocommit=False,
+                       autoflush=False,
+                       bind=create_engine(DB_URI))
+session = scoped_session(Session)

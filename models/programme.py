@@ -1,23 +1,16 @@
-from flask import request
-from flask_restful import Resource
+from sqlalchemy import Integer, DateTime, Time, String, Column, ForeignKey
+from sqlalchemy.orm import relationship
 
-from database import engine as e
-from utils import parse_query
+from models.base import Base
 
 
-# TODO Add pages to request
-# TODO Add results per page property
-class Programme(Resource):
-    def __init__(self):
-        self.__args = request.args
-
-    def get(self):
-        conn = e.connect()
-        if 'channel-id' in self.__args.keys():
-            query = conn.execute("SELECT * FROM programme WHERE channel_id={channel-id}".format(**self.__args))
-        elif 'category-id' in self.__args.keys():
-            query = conn.execute("SELECT * FROM programme WHERE id IN (SELECT programme_id FROM programme_category "
-                                 "WHERE category_id={category-id})".format(**self.__args))
-        else:
-            query = conn.execute("SELECT * FROM programme")
-        return parse_query(query)
+class Programme(Base):
+    __tablename__ = 'programme'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    title = Column(String(255))
+    title_lang = Column(String(10))
+    start = Column(DateTime, unique=True)
+    end = Column(DateTime, unique=True)
+    duration = Column(Time)
+    channel_id = Column(Integer, ForeignKey('channels.id'), unique=True)
+    channels = relationship('Channels', cascade='delete')

@@ -5,13 +5,6 @@ Host: tv.isokol-dev.ru
 
 ###
 
-GET /api/channels?id=2
-Accept: application/json
-Cache-Control: no-cache
-Host: tv.isokol-dev.ru
-
-###
-
 GET /api/categories
 Accept: application/json
 Cache-Control: no-cache
@@ -19,28 +12,7 @@ Host: tv.isokol-dev.ru
 
 ###
 
-GET /api/categories?programme-id=195188
-Accept: application/json
-Cache-Control: no-cache
-Host: tv.isokol-dev.ru
-
-###
-
-GET /api/programme?channel-id=2
-Accept: application/json
-Cache-Control: no-cache
-Host: tv.isokol-dev.ru
-
-###
-
 GET /api/programme
-Accept: application/json
-Cache-Control: no-cache
-Host: tv.isokol-dev.ru
-
-###
-
-GET /api/programme?category-id=17
 Accept: application/json
 Cache-Control: no-cache
 Host: tv.isokol-dev.ru

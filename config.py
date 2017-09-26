@@ -9,3 +9,5 @@ config = {
     'host': 'tv.isokol-dev.ru',
     'port': 8085
 }
+
+DB_URI = '{dms}+{driver}://{user}:{password}@{server}/{database}?charset={charset}'.format(**config)

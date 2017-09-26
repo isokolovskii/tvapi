@@ -1,0 +1,3 @@
+from resources.categoriesResources import CategoriesResources
+from resources.channelsResources import ChannelsResources
+from resources.programmeResources import ProgrammeResources
