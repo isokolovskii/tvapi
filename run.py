@@ -2,6 +2,8 @@ from flask import Flask, request
 from flask_restful import Resource, Api
 from sqlalchemy import create_engine
 
+# TODO Fix programme requests
+
 config = {
     'dms': 'mysql',
     'driver': 'pymysql',
@@ -43,7 +45,11 @@ class Categories(Resource):
 
     def get(self):
         conn = e.connect()
-        query = conn.execute("SELECT * FROM categories")
+        if 'programme-id' in self.__args.keys():
+            query = conn.execute("SELECT * FROM categories WHERE id IN (SELECT category_id FROM programme_category "
+                                 "WHERE programme_id={programme-id})".format(**self.__args))
+        else:
+            query = conn.execute("SELECT * FROM categories")
         return parse_query(query)
 
 
@@ -55,6 +61,9 @@ class Programme(Resource):
         conn = e.connect()
         if 'channel-id' in self.__args.keys():
             query = conn.execute("SELECT * FROM programme WHERE channel_id={channel-id}".format(**self.__args))
+        elif 'category-id' in self.__args.keys():
+            query = conn.execute("SELECT * FROM programme WHERE id IN (SELECT programme_id FROM programme_category "
+                                 "WHERE category_id={category-id})".format(**self.__args))
         else:
             query = conn.execute("SELECT * FROM programme")
         return parse_query(query)
