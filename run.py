@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from flask_restful import Resource, Api
 from sqlalchemy import create_engine
 
@@ -10,7 +10,7 @@ config = {
     'server': 'localhost',
     'database': 'tvservice',
     'charset': 'utf8',
-    'host': 'isokol-dev.ru',
+    'host': 'tv.isokol-dev.ru',
     'port': 8085
 }
 
@@ -19,36 +19,50 @@ app = Flask(__name__)
 api = Api(app)
 
 
+def parse_query(query):
+    result = {'data': [dict(zip(tuple(query.keys()), i)) for i in query.cursor]}
+    return result
+
+
 class Channels(Resource):
-    @staticmethod
-    def get():
-        conn = e.connect()
-        query = conn.execute("SELECT * FROM channels")
-        result = {'data': [dict(zip(tuple(query.keys()), i)) for i in query.cursor]}
-        return result
+    def __init__(self):
+        self.__args = request.args
 
-
-class Channel(Resource):
-    @staticmethod
-    def get(channel_id):
+    def get(self):
         conn = e.connect()
-        query = conn.execute("SELECT * FROM channels WHERE id={}".format(channel_id))
-        result = {'data': [dict(zip(tuple(query.keys()), i)) for i in query.cursor]}
-        return result
+        if 'id' in self.__args.keys():
+            query = conn.execute("SELECT * FROM channels WHERE id={id}".format(**self.__args))
+        else:
+            query = conn.execute("SELECT * FROM channels")
+        return parse_query(query)
 
 
 class Categories(Resource):
-    @staticmethod
-    def get():
+    def __init__(self):
+        self.__args = request.args
+
+    def get(self):
         conn = e.connect()
         query = conn.execute("SELECT * FROM categories")
-        result = {'data': [dict(zip(tuple(query.keys()), i)) for i in query.cursor]}
-        return result
+        return parse_query(query)
 
 
-api.add_resource(Channel, '/channel/<string:channel_id>')
-api.add_resource(Channels, '/channels')
-api.add_resource(Categories, '/categories')
+class Programme(Resource):
+    def __init__(self):
+        self.__args = request.args
+
+    def get(self):
+        conn = e.connect()
+        if 'channel-id' in self.__args.keys():
+            query = conn.execute("SELECT * FROM programme WHERE channel_id={channel-id}".format(**self.__args))
+        else:
+            query = conn.execute("SELECT * FROM programme")
+        return parse_query(query)
+
+
+api.add_resource(Channels, '/api/channels', endpoint='channels')
+api.add_resource(Categories, '/api/categories', endpoint='categories')
+api.add_resource(Programme, '/api/programme', endpoint='programme')
 
 if __name__ == '__main__':
     app.run(host=config['host'], port=config['port'])

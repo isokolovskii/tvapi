@@ -1,11 +1,35 @@
-GET http://tv.isokol-dev.ru:8085/channels
+GET /api/channels
 Accept: application/json
 Cache-Control: no-cache
+Host: tv.isokol-dev.ru
 
 ###
 
-GET http://tv.isokol-dev.ru:8085/categories
+GET /api/categories
 Accept: application/json
 Cache-Control: no-cache
+Host: tv.isokol-dev.ru
+
+###
+
+
+GET /api/channels?id=2
+Accept: application/json
+Cache-Control: no-cache
+Host: tv.isokol-dev.ru
+
+###
+
+GET /api/programme?channel-id=2
+Accept: application/json
+Cache-Control: no-cache
+Host: tv.isokol-dev.ru
+
+###
+
+GET /api/programme
+Accept: application/json
+Cache-Control: no-cache
+Host: tv.isokol-dev.ru
 
 ###
