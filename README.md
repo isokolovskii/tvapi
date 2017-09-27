@@ -8,7 +8,7 @@ desktop and other applications to get all data about schedule.
 Application is based on Flask-restful, uses SqlAlchemy for 
 communications with MySQL database. 
 
-##Contents:
+#Contents:
 #### config.py
 API server configuration. It consists of config 
 dictionary with database management system info(***mysql***),

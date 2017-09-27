@@ -4,7 +4,7 @@ Module contents resources for all models from
 ***models module*** to respond to *GET*, *POST* and other 
 requests.
 
-###Contents:
+##Contents:
 #### categoriesResources.py
 Class for requests responding for ***Categories*** model.
 
