@@ -1,4 +1,4 @@
-# TV Restful API
+# TV Restful API #
 This application is a part of TV project group aimed to 
 deliver great experience in browsing TV schedule.
 
@@ -8,8 +8,8 @@ desktop and other applications to get all data about schedule.
 Application is based on Flask-restful, uses SqlAlchemy for 
 communications with MySQL database. 
 
-#Contents:
-#### config.py
+## Contents: ##
+#### config.py ####
 API server configuration. It consists of config 
 dictionary with database management system info(***mysql***),
 database driver info(***pymysql***), database user and 
@@ -19,28 +19,28 @@ server to start.
 Last thing is database URI for SqlAlchemy connection.
 
 
-#### database.py
+#### database.py ####
 Creates session for communication with database with bind
 engine created for database URI from configuration.
 After session initialization creates scoped session for use
 in application.
 
-#### models
+#### models ####
 Models module.
 Classes bind tables from database.
 
-#### resources
+#### resources ####
 Resources module for use in Flask API.
 Classes use model and scoped session from ***database.py***
 to execute queries on database and return results as JSON 
 objects.
 
-#### tvrestapi.py
+#### tvrestapi.py ####
 Main application script.
 Creates Flask app and instantiates Flask API for this app,
 then add resources to that API from resources module and
 binds it to API routes. 
 Then runs API server.
 
-#### api_test.http
+#### api_test.http ####
 File contents test API requests for application testing.
