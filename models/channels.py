@@ -9,3 +9,9 @@ class Channels(Base):
     title = Column(String(255))
     lang = Column(String(10))
     icon = Column(String(255))
+
+    def __init__(self, id, title, lang, icon):
+        self.id = id
+        self.title = title
+        self.lang = lang
+        self.icon = icon

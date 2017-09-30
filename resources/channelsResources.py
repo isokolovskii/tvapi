@@ -1,7 +1,8 @@
-from flask.ext.restful import reqparse, abort, Resource, fields, marshal_with
+from flask import request
+from flask.ext.restful import Resource, fields
 
-from database import session
 from models import Channels
+from resources.paginator import Paginator
 
 channels_fields = {
     'id': fields.Integer,
@@ -10,15 +11,9 @@ channels_fields = {
     'icon': fields.String(255)
 }
 
-parser = reqparse.RequestParser()
-parser.add_argument('channels', type=str)
 
-
-class ChannelsResources(Resource):
-    @marshal_with(channels_fields)
+class ChannelsResources(Resource, Paginator):
     def get(self):
-        channels = session.query(Channels).all()
-        if not channels:
-            abort(404, message="Channels table is empty")
-        else:
-            return channels
+        return self.get_paginated_list(Channels, '/api/channels', start=request.args.get(
+            'start', 1), maxResults=request.args.get('maxResults', 20),
+                                       table_schema=channels_fields)

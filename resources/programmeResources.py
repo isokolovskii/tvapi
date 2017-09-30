@@ -1,7 +1,8 @@
-from flask.ext.restful import reqparse, abort, Resource, fields, marshal_with
+from flask import request
+from flask.ext.restful import Resource, fields
 
-from database import session
 from models import Programme
+from resources.paginator import Paginator
 
 programme_fields = {
     'id': fields.Integer,
@@ -10,18 +11,14 @@ programme_fields = {
     'start': fields.DateTime('iso8601'),
     'end': fields.DateTime('iso8601'),
     'duration': fields.DateTime('iso8601'),
+    'description': fields.String,
+    'description_lang': fields.String(10),
     'channel_id': fields.Integer
 }
 
-parser = reqparse.RequestParser()
-parser.add_argument('programme', type=str)
 
-
-class ProgrammeResources(Resource):
-    @marshal_with(programme_fields)
+class ProgrammeResources(Resource, Paginator):
     def get(self):
-        programme = session.query(Programme).all()
-        if not programme:
-            abort(404, message="Programme table is empty")
-        else:
-            return programme
+        return self.get_paginated_list(Programme, '/api/programme', start=request.args.get(
+            'start', 1), maxResults=request.args.get('maxResults', 20),
+                                       table_schema=programme_fields)

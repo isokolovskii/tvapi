@@ -1,7 +1,8 @@
-from flask.ext.restful import reqparse, abort, Resource, fields, marshal_with
+from flask import request
+from flask.ext.restful import Resource, fields
 
-from database import session
 from models import Categories
+from resources.paginator import Paginator
 
 categories_fields = {
     'id': fields.Integer,
@@ -9,15 +10,9 @@ categories_fields = {
     'lang': fields.String(10)
 }
 
-parser = reqparse.RequestParser()
-parser.add_argument('categories', type=str)
 
-
-class CategoriesResources(Resource):
-    @marshal_with(categories_fields)
+class CategoriesResources(Resource, Paginator):
     def get(self):
-        categories = session.query(Categories).all()
-        if not categories:
-            abort(404, message="Categories table is empty")
-        else:
-            return categories
+        return self.get_paginated_list(Categories, '/api/categories', start=request.args.get(
+            'start', 1), maxResults=request.args.get('maxResults', 20),
+                                       table_schema=categories_fields)
