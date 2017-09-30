@@ -1,4 +1,4 @@
-GET /api/channels
+GET /api/channels?maxResults=5
 Accept: application/json
 Cache-Control: no-cache
 Host: tv.isokol-dev.ru

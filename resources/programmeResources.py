@@ -1,5 +1,6 @@
 from flask import request
 from flask.ext.restful import Resource, fields
+from webargs.flaskparser import use_kwargs, parser
 
 from models import Programme
 from resources.paginator import Paginator
@@ -18,7 +19,8 @@ programme_fields = {
 
 
 class ProgrammeResources(Resource, Paginator):
-    def get(self):
-        return self.get_paginated_list(Programme, '/api/programme', start=request.args.get(
-            'start', 1), maxResults=request.args.get('maxResults', 20),
-                                       table_schema=programme_fields)
+    @use_kwargs(Paginator.args)
+    def get(self, start, maxResults):
+        parser.parse(self.args, request)
+        return self.get_paginated_list(Programme, '/api/programme', start=start,
+                                       maxResults=maxResults, table_schema=programme_fields)

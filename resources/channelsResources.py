@@ -1,5 +1,6 @@
 from flask import request
 from flask.ext.restful import Resource, fields
+from webargs.flaskparser import use_kwargs, parser
 
 from models import Channels
 from resources.paginator import Paginator
@@ -13,7 +14,8 @@ channels_fields = {
 
 
 class ChannelsResources(Resource, Paginator):
-    def get(self):
-        return self.get_paginated_list(Channels, '/api/channels', start=request.args.get(
-            'start', 1), maxResults=request.args.get('maxResults', 20),
-                                       table_schema=channels_fields)
+    @use_kwargs(Paginator.args)
+    def get(self, start, maxResults):
+        parser.parse(self.args, request)
+        return self.get_paginated_list(Channels, '/api/channels', start=start,
+                                       maxResults=maxResults, table_schema=channels_fields)

@@ -1,9 +1,18 @@
+import webargs
 from flask_restful import abort, marshal
+from marshmallow.validate import Range
 
 from database import session
 
 
 class Paginator:
+    args = {
+        'maxResults': webargs.fields.Int(required=False, missing=20,
+                                         validate=Range(min=1, max=100)),
+        'start': webargs.fields.Int(required=False, missing=1,
+                                    validate=Range(min=1))
+    }
+
     @staticmethod
     def get_paginated_list(model, url, start, maxResults, table_schema):
         # check if page exists

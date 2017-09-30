@@ -1,5 +1,6 @@
 from flask import request
-from flask.ext.restful import Resource, fields
+from flask.ext.restful import Resource, fields, abort
+from webargs.flaskparser import use_kwargs, parser
 
 from models import Categories
 from resources.paginator import Paginator
@@ -11,8 +12,14 @@ categories_fields = {
 }
 
 
+@parser.error_handler
+def handle_request_parsing_error(err):
+    abort(422, errors=err.messages)
+
+
 class CategoriesResources(Resource, Paginator):
-    def get(self):
-        return self.get_paginated_list(Categories, '/api/categories', start=request.args.get(
-            'start', 1), maxResults=request.args.get('maxResults', 20),
-                                       table_schema=categories_fields)
+    @use_kwargs(Paginator.args)
+    def get(self, start, maxResults):
+        parser.parse(self.args, request)
+        return self.get_paginated_list(Categories, '/api/categories', start=start,
+                                       maxResults=maxResults, table_schema=categories_fields)
