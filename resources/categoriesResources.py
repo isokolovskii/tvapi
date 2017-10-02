@@ -19,7 +19,6 @@ def handle_request_parsing_error(err):
 
 class CategoriesResources(Resource, Paginator):
     @use_kwargs(Paginator.args)
-    def get(self, start, maxResults):
+    def get(self, maxResults, pageToken):
         parser.parse(self.args, request)
-        return self.get_paginated_list(Categories, '/api/categories', start=start,
-                                       maxResults=maxResults, table_schema=categories_fields)
+        return self.get_paginated_list(Categories, maxResults, categories_fields, pageToken)

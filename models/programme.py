@@ -9,7 +9,7 @@ class Programme(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     title = Column(String(255))
     title_lang = Column(String(10))
-    start = Column(DateTime, unique=True)
+    begin = Column(DateTime, unique=True)
     end = Column(DateTime, unique=True)
     duration = Column(Time)
     description = Column(String)

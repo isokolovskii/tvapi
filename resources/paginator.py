@@ -1,6 +1,10 @@
+import base64
+
 import webargs
-from flask_restful import abort, marshal
+from flask import json
+from flask_restful import marshal, abort
 from marshmallow.validate import Range
+from Crypto.Cipher import AES
 
 from database import session
 
@@ -9,36 +13,59 @@ class Paginator:
     args = {
         'maxResults': webargs.fields.Int(required=False, missing=20,
                                          validate=Range(min=1, max=100)),
-        'start': webargs.fields.Int(required=False, missing=1,
-                                    validate=Range(min=1))
+        'pageToken': webargs.fields.Str(required=False, missing=None)
     }
 
-    @staticmethod
-    def get_paginated_list(model, url, start, maxResults, table_schema):
-        # check if page exists
-        items = marshal(session.query(model).all(), table_schema)
-        total = len(items)
-        if total < start:
+    __secret = 'mysixteenbytekey'
+
+    def get_paginated_list(self, model, maxResults, table_schema, pageToken):
+        # get request and page info, check if page exists
+        start = 0
+        maxResults = maxResults
+        total = session.query(model.id).count()
+        if pageToken is not None:
+            token_string = self.decode(pageToken)
+            d = json.loads(token_string)
+            start = d['start']
+            maxResults = d['maxResults']
+        if start > total:
             abort(404)
-        # make URLs
-        nextPage = ''
+
+        # generate next and previous page
         prevPage = ''
-        # make previous url
-        if start > 1:
-            start_copy = max(1, start - maxResults)
-            limit_copy = start - 1
-            prevPage = url + '?start=%d&maxResults=%d' % (start_copy, limit_copy)
-        # make next url
-        if start + maxResults < total:
-            start_copy = start + maxResults
-            nextPage = url + '?start=%d&maxResults=%d' % (start_copy, maxResults)
+        nextPage = ''
+        if start + maxResults <= total:
+            d = {'start': start + maxResults, 'maxResults': maxResults}
+            token_string = json.dumps(d)
+            nextPage = self.encode(token_string)
+        if start - maxResults >= 0:
+            d = {'start': start - maxResults, 'maxResults': maxResults}
+            token_string = json.dumps(d)
+            prevPage = self.encode(token_string)
+
+        # query items from table
+        q = session.query(model).limit(maxResults)
+        q = q.offset(start)
+        q = q.all()
+        items = marshal(q, table_schema)
+
         # make response
         obj = {
-            'maxResults': maxResults,
-            'total': total,
             'content': model.__name__,
+            'results': maxResults,
+            'total': total,
             'prevPage': prevPage,
             'nextPage:': nextPage,
-            'items': items[(start - 1):(start - 1 + maxResults)]
+            'items': items
         }
         return obj
+
+    def encode(self, plaintext):
+        cipher = AES.new(self.__secret, AES.MODE_ECB)
+        encoded = base64.b64encode(cipher.encrypt(plaintext.rjust(32)))
+        return str(encoded.decode('utf-8'))
+
+    def decode(self, ciphertext):
+        cipher = AES.new(self.__secret, AES.MODE_ECB)
+        decoded = cipher.decrypt(base64.b64decode(ciphertext))
+        return decoded.strip()

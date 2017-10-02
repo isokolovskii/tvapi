@@ -2,7 +2,7 @@
 
 Module contents resources for all models from
 ***models module*** to respond to *GET*, *POST* and other 
-requests. GET requests returns data in pagination format.
+requests. GET requests returns data in paginated format.
 
 ### Contents: ###
 #### categoriesResources.py ####

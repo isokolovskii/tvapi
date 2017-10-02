@@ -1,4 +1,18 @@
-GET /api/channels?maxResults=5
+GET /api/channels
+Accept: application/json
+Cache-Control: no-cache
+Host: tv.isokol-dev.ru
+
+###
+
+GET /api/channels?maxResults=10
+Accept: application/json
+Cache-Control: no-cache
+Host: tv.isokol-dev.ru
+
+###
+
+GET /api/channels?pageToken=IEHCMVIPKy6lVRUIs8INHjgwzmA2GoOnsCBPdwDrcp8=
 Accept: application/json
 Cache-Control: no-cache
 Host: tv.isokol-dev.ru
@@ -12,7 +26,35 @@ Host: tv.isokol-dev.ru
 
 ###
 
+GET /api/categories?maxResults=10
+Accept: application/json
+Cache-Control: no-cache
+Host: tv.isokol-dev.ru
+
+###
+
+GET /api/categories?pageToken=
+Accept: application/json
+Cache-Control: no-cache
+Host: tv.isokol-dev.ru
+
+###
+
 GET /api/programme
+Accept: application/json
+Cache-Control: no-cache
+Host: tv.isokol-dev.ru
+
+###
+
+GET /api/programme?maxResults=10
+Accept: application/json
+Cache-Control: no-cache
+Host: tv.isokol-dev.ru
+
+###
+
+GET /api/programme?pageToken=IEHCMVIPKy6lVRUIs8INHj5JLSbWq6iEQ0yoA50ptpQ=
 Accept: application/json
 Cache-Control: no-cache
 Host: tv.isokol-dev.ru
