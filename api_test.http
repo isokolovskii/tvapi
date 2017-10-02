@@ -12,7 +12,7 @@ Host: tv.isokol-dev.ru
 
 ###
 
-GET /api/channels?pageToken=IEHCMVIPKy6lVRUIs8INHjgwzmA2GoOnsCBPdwDrcp8=
+GET /api/channels?pageToken=IEHCMVIPKy6lVRUIs8INHpZUWMgwT8x4q3psH5PtMHo=
 Accept: application/json
 Cache-Control: no-cache
 Host: tv.isokol-dev.ru
@@ -33,7 +33,7 @@ Host: tv.isokol-dev.ru
 
 ###
 
-GET /api/categories?pageToken=
+GET /api/categories?pageToen=
 Accept: application/json
 Cache-Control: no-cache
 Host: tv.isokol-dev.ru
@@ -47,14 +47,14 @@ Host: tv.isokol-dev.ru
 
 ###
 
-GET /api/programme?maxResults=10
+GET /api/programme?maxResults=5
 Accept: application/json
 Cache-Control: no-cache
 Host: tv.isokol-dev.ru
 
 ###
 
-GET /api/programme?pageToken=IEHCMVIPKy6lVRUIs8INHj5JLSbWq6iEQ0yoA50ptpQ=
+GET /api/programme?pageToken=BZ7fgMg6TSHHxXu9snjk9m4NPba3CaUY14ju1s/KUaU=
 Accept: application/json
 Cache-Control: no-cache
 Host: tv.isokol-dev.ru
