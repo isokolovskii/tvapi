@@ -1,18 +1,18 @@
 import base64
-
 import binascii
 import hashlib
 
 import webargs
+from Crypto.Cipher import AES
 from flask import json
 from flask_restful import marshal, abort
 from marshmallow.validate import Range
-from Crypto.Cipher import AES
 
 from database import session
 from secretpassphrase import pass_phrase
 
 
+# token validation function
 def check_token(token):
     if token is None or token == "":
         return True
@@ -29,12 +29,15 @@ def check_token(token):
 
 
 class Paginator:
+    # webargs
     args = {
         'maxResults': webargs.fields.Int(required=False, missing=20,
                                          validate=Range(min=1, max=99)),
         'pageToken': webargs.fields.Str(required=False, missing=None,
                                         validate=check_token)
     }
+
+    # secret key and cipher for encryption
     key = pass_phrase.encode('utf-8')
     secret = hashlib.sha256(key).digest()
     cipher = AES.new(secret, AES.MODE_ECB)
@@ -81,10 +84,12 @@ class Paginator:
         }
         return obj
 
+    # generate next page token
     def __generate_token(self, token_string):
         encoded = base64.b64encode(self.cipher.encrypt(token_string.rjust(32)))
         return encoded.decode('utf-8')
 
+    # parse token into python object for use
     def __parse_token(self, token):
         decoded = self.cipher.decrypt(base64.b64decode(token))
         return decoded.strip()
