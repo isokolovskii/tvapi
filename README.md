@@ -44,3 +44,8 @@ Then runs API server.
 
 #### api_test.http ####
 File contents test API requests for application testing.
+
+#### secretpassphrase.py ####
+File contains secret pass phrase for generating secret keys.
+***Example:***
+pass_phrase = "MY PASS PHRASE"

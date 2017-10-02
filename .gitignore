@@ -25,3 +25,5 @@ fabric.properties
 
 .idea/httpRequests/
 .idea/inspectionProfiles/
+/secretpassphrase.py
+.idea/workspace 2.xml

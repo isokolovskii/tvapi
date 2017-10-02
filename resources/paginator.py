@@ -1,6 +1,8 @@
 import base64
 
 import binascii
+import hashlib
+
 import webargs
 from flask import json
 from flask_restful import marshal, abort
@@ -8,13 +10,12 @@ from marshmallow.validate import Range
 from Crypto.Cipher import AES
 
 from database import session
+from secretpassphrase import pass_phrase
 
 
 def check_token(token):
-    if token is None:
+    if token is None or token == "":
         return True
-    if token == "":
-        raise webargs.ValidationError("Empty page token")
     try:
         decoded = Paginator.cipher.decrypt(base64.b64decode(token))
     except binascii.Error:
@@ -34,8 +35,8 @@ class Paginator:
         'pageToken': webargs.fields.Str(required=False, missing=None,
                                         validate=check_token)
     }
-
-    secret = 'mysixteenbytekey'
+    key = pass_phrase.encode('utf-8')
+    secret = hashlib.sha256(key).digest()
     cipher = AES.new(secret, AES.MODE_ECB)
 
     def get_paginated_list(self, model, maxResults, table_schema, pageToken):
